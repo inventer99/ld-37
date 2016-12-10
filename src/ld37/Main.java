@@ -6,6 +6,8 @@ import java.awt.event.KeyEvent;
 import ld37.room.Room;
 import pixgen.Game;
 import pixgen.PixGen;
+import pixgen.math.Vector;
+import pixgen.scene.Node;
 import pixgen.util.Config;
 
 public class Main extends Game
@@ -16,6 +18,12 @@ public class Main extends Game
 	public Config bindings;
 	
 	public UI ui;
+	
+	public Node layerBack;
+	public Node layer1;
+	public Node layerPlay;
+	public Node layer2;
+	public Node layerFront;
 	
 	public Room room;
 	
@@ -46,11 +54,26 @@ public class Main extends Game
 	
 		engine.getCamera().setZoom(10.0F);
 		
+		layerBack = new Node();
+		rootNode.addChild(layerBack);
+		
+		layer1 = new Node();
+		rootNode.addChild(layer1);
+		
+		layerPlay = new Node();
+		rootNode.addChild(layerPlay);
+		
+		layer2 = new Node();
+		rootNode.addChild(layer2);
+		
+		layerFront = new Node();
+		rootNode.addChild(layerFront);
+		
 		room = new Room();
-		rootNode.addChild(room);
 	
 		player = new Player();
-		rootNode.addChild(player);
+		player.localTranslation = new Vector(10, -6);
+		layerPlay.addChild(player);
 	}
 
 	@Override
