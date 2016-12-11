@@ -1,0 +1,18 @@
+Alone In A Room - LD37
+----------------------
+Made by inventer99
+
+This game reqires Java 1.8.0 (Made with Java 1.8.0_74)
+
+
+Goal:
+
+Survive the zombies for as long as you can.
+
+
+Note:
+
+All code is on github. (Game and Engine)
+
+https://github.com/inventer99/ld-37
+https://github.com/inventer99/pixgen2
