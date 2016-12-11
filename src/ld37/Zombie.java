@@ -144,6 +144,41 @@ public class Zombie extends Entity implements PhysicsListener
 			canEnter = true;
 			enterCooldown = 0;
 		}
+		
+		if(ai.inHouse)
+		{
+			// left wall
+			if(localTranslation.x < 9)
+				localTranslation.x = 9;
+			// Right wall
+			if(localTranslation.x > 32)
+				localTranslation.x = 32;
+			// Top left/right wall
+			if(localTranslation.y > -4.5)
+				localTranslation.y = -4.5F;
+			// Bottom left/right wall
+			if(localTranslation.y < -12.5)
+				localTranslation.y = -12.5F;
+			
+			// Top center wall
+			if(localTranslation.y > -6.5 && localTranslation.y < -6 && localTranslation.x > 16 && localTranslation.x < 25)
+				localTranslation.y = -6.5F;
+			// Bottom center wall
+			if(localTranslation.y < -10.5 && localTranslation.y > -11 && localTranslation.x > 16 && localTranslation.x < 25)
+				localTranslation.y = -10.5F;
+			// Bottom center-left wall
+			if(localTranslation.x > 16 && localTranslation.x < 16.5 && localTranslation.y > -14.5 && localTranslation.y < -10.5)
+				localTranslation.x = 16F;
+			// Bottom center-right wall
+			if(localTranslation.x < 25 && localTranslation.x > 24.5 && localTranslation.y > -14.5 && localTranslation.y < -10.5)
+				localTranslation.x = 25F;
+			// Top center-left wall
+			if(localTranslation.x > 16 && localTranslation.x < 16.5 && localTranslation.y > -6.5 && localTranslation.y < -2)
+				localTranslation.x = 16F;
+			// Top center-right wall
+			if(localTranslation.x < 25 && localTranslation.x > 24.5 && localTranslation.y > -6.5 && localTranslation.y < -2)
+				localTranslation.x = 25F;
+		}
 	}
 	
 	@Override

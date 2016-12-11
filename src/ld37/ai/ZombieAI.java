@@ -103,5 +103,6 @@ public class ZombieAI extends Component implements Updateable
 		left = false;
 		right = false;
 		attack = false;
+		enter = false;
 	}
 }
