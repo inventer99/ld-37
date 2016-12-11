@@ -50,4 +50,9 @@ public class Board extends Entity
 	{
 		return textureIndex == 4;
 	}
+	
+	public boolean isBroke()
+	{
+		return textureIndex == 0;
+	}
 }

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 import ld37.ai.ZombieAI;
+import ld37.room.Board;
 import pixgen.PixGen;
 import pixgen.comp.Animation;
 import pixgen.comp.Texture;
@@ -31,6 +32,9 @@ public class Zombie extends Entity implements PhysicsListener
 	
 	private float hitCooldown;
 	private boolean canHit;
+	
+	private float enterCooldown;
+	private boolean canEnter;
 	
 	private int health;
 	
@@ -78,9 +82,15 @@ public class Zombie extends Entity implements PhysicsListener
 		speed = 2.5F;
 		velocity = new Vector();
 		
-		collider = new CircleCollider(1);
+		collider = new CircleCollider(1.5F);
 		addComponent(collider);
 		Main.game.physicsManager.addChild(this);
+		
+		hitCooldown = 0;
+		canHit = true;
+		
+		enterCooldown = 0;
+		canEnter = true;
 		
 		health = 5;
 	}
@@ -125,6 +135,15 @@ public class Zombie extends Entity implements PhysicsListener
 			canHit = true;
 			hitCooldown = 0;
 		}
+		
+		if(!canEnter)
+			enterCooldown += delta;
+		
+		if(enterCooldown >= 3.0)
+		{
+			canEnter = true;
+			enterCooldown = 0;
+		}
 	}
 	
 	@Override
@@ -143,6 +162,22 @@ public class Zombie extends Entity implements PhysicsListener
 					(int) (-0.5 * PixGen.getCamera().unit) + 1,
 					(int) (-1.7 * PixGen.getCamera().unit) + 1,
 					(int) ((PixGen.getCamera().unit - 2) / 1.0 * hitCooldown),
+					(int) (0.1 * PixGen.getCamera().unit) - 2);
+		}
+		
+		if(!canEnter)
+		{
+			g.setColor(Color.BLACK);
+			g.fillRect(
+					(int) (-0.5 * PixGen.getCamera().unit),
+					(int) (-1.9 * PixGen.getCamera().unit),
+					(int) (PixGen.getCamera().unit),
+					(int) (0.1 * PixGen.getCamera().unit));
+			g.setColor(Main.game.ui.fixColor);
+			g.fillRect(
+					(int) (-0.5 * PixGen.getCamera().unit) + 1,
+					(int) (-1.9 * PixGen.getCamera().unit) + 1,
+					(int) ((PixGen.getCamera().unit - 2) / 3.0 * enterCooldown),
 					(int) (0.1 * PixGen.getCamera().unit) - 2);
 		}
 		
@@ -184,6 +219,22 @@ public class Zombie extends Entity implements PhysicsListener
 			{
 				((Player) collision.with).hit();
 				canHit = false;
+			}
+		}
+		
+		if(ai.enter && canEnter)
+		{
+			if(collision.with instanceof Board)
+			{
+				if(!((Board) collision.with).isBroke())
+				{
+					((Board) collision.with).damage();
+					canEnter = false;
+				}
+				else
+				{
+					ai.inHouse = true;
+				}
 			}
 		}
 	}

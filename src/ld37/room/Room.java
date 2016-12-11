@@ -22,6 +22,8 @@ public class Room extends Node
 	public Texture grass;
 	public Texture grass_flowers;
 	
+//	public String[] navGraph;
+	
 	private String[] ground;
 	private String[] plan1;
 	private String[] plan2;
@@ -44,6 +46,27 @@ public class Room extends Node
 		door = new Texture(Main.game.assetManager.loadImage("res/tiles/building/door.png"));
 		grass = new Texture(Main.game.assetManager.loadImage("res/tiles/natural/grass.png"));
 		grass_flowers = new Texture(Main.game.assetManager.loadImage("res/tiles/natural/grass_flowers.png"));
+		
+//		navGraph = new String[] {
+//			"##########################################",
+//			"##########################################",
+//			"##########################################",
+//			"########   #  #   ######   #  #   ########",
+//			"######## ######## ###### ######## ########",
+//			"######## ########  #  #  ######## ########",
+//			"######## ######################## ########",
+//			"######## ######################## ########",
+//			"######## ######################## ########",
+//			"######## ######################## ########",
+//			"######## ######################## ########",
+//			"######## ########        ######## ########",
+//			"######## ######## ###### ######## ########",
+//			"########   #  #   ######   #  #   ########",
+//			"##########################################",
+//			"##########################################",
+//			"##########################################",
+//			"##########################################",
+//		};
 		
 		ground = new String[] {
 			"..........................................",

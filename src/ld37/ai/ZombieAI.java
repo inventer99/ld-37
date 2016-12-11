@@ -1,8 +1,13 @@
 package ld37.ai;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import ld37.Main;
+import ld37.room.Board;
 import pixgen.comp.Component;
 import pixgen.math.Vector;
+import pixgen.scene.Node;
 import pixgen.util.Updateable;
 
 public class ZombieAI extends Component implements Updateable
@@ -14,45 +19,80 @@ public class ZombieAI extends Component implements Updateable
 	
 	public boolean attack = false;
 	
-	Vector playerPos;
-	Vector dist;
+	public boolean enter = false;
+	
+	public boolean inHouse = false;
+	
+	private Vector targetPos;
+	private Vector dist;
 	
 	@Override
 	public void update(float delta)
 	{
-		playerPos = Main.game.player.localTranslation;
-		
-		dist = new Vector(parent.localTranslation.x - playerPos.x, parent.localTranslation.y - playerPos.y);
-		
-		if(dist.x > 1)
-			left = true;
+		if(!inHouse)
+		{
+			if(targetPos == null)
+			{
+				ArrayList<Board> boards = new ArrayList<Board>();
+				for(Node node : Main.game.layer1.getChildren())
+					if(node instanceof Board)
+						boards.add((Board) node);
+				for(Node node : Main.game.layer2.getChildren())
+					if(node instanceof Board)
+						boards.add((Board) node);
+				
+//				Vector diff boards.get(0);
+//				for(Board board : boards)
+//				{
+//					if((new Vector(parent.localTranslation).sub(board.localTranslation)).getLength() < diff.getLength())
+//						diff = board.localTranslation;
+//				}
+				
+				Random r = new Random();
+				
+				targetPos = boards.get(r.nextInt(boards.size())).localTranslation;
+			}
+		}
 		else
-			left = false;
+			targetPos = Main.game.player.localTranslation;
 		
-		if(dist.x < -1)
-			right = true;
-		else
-			right = false;
+		dist = new Vector(parent.localTranslation.x - targetPos.x, parent.localTranslation.y - targetPos.y);
 		
-		if(dist.y < -1)
+		if(dist.y < -0.5)
 			up = true;
 		else
 			up = false;
 		
-		if(dist.y > 1)
+		if(dist.y > 0.5)
 			down = true;
 		else
 			down = false;
+		
+		if(dist.x > 0.5)
+			left = true;
+		else
+			left = false;
+		
+		if(dist.x < -0.5)
+			right = true;
+		else
+			right = false;
 		
 		if(!up && !down && !left && !right)
 		{
 			// Attack 75% of the time
 			if(Math.random() * 10 >= 2.5)
-				attack = true;
+			{
+				if(inHouse)
+					attack = true;
+				else
+					enter = true;
+			}
 		}
 		else
 		{
 			attack = false;
+			enter = false;
 		}
 	}
 	

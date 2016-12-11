@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import ld37.room.Board;
 import ld37.room.Room;
 import ld37.room.Sky;
+import ld37.room.Spawner;
 import pixgen.Game;
 import pixgen.PixGen;
 import pixgen.math.Vector;
@@ -34,6 +35,7 @@ public class Main extends Game
 	
 	public Player player;
 	
+	public Spawner spawner;
 	public Zombie zombie;
 	
 	public double timeSurvived;
@@ -57,7 +59,7 @@ public class Main extends Game
 		ui = new UI();
 		ui.init();
 		
-		timeSurvived = 0;
+		timeSurvived = 1;
 		
 		cash = 1000;
 	
@@ -96,12 +98,14 @@ public class Main extends Game
 		layerPlay.addChild(player);
 		
 		zombie = new Zombie();
-		zombie.localTranslation = new Vector(12, -8);
-		layerPlay.addChild(zombie);
+		
+		spawner = new Spawner(zombie, 0.1F);
+		spawner.localTranslation = new Vector(0.0F, 0.0F);
+		layerPlay.addChild(spawner);
 	}
 
 	private boolean lastH = false;
-//	private double timePay = 0; 
+	private boolean didPay = false;
 	
 	@Override
 	public void update(float delta)
@@ -110,12 +114,14 @@ public class Main extends Game
 		{
 			timeSurvived += delta;
 			
-	//		timePay = ((long) timeSurvived % 60 == 0) ? 1 : 0;
-	//		if(timePay == 1)
-	//		{
-	//			changeCash(1000);
-	//			timePay = 0;
-	//		}
+			if((long) timeSurvived % 60 == 0 && !didPay)
+			{
+				changeCash(1000);
+				spawner.changeSpawnRate(0.05F);
+				didPay = true;
+			}
+			if((long) timeSurvived % 60 == 1 && didPay)
+				didPay = false;
 				
 			if(engine.getKeyManager().keyDown(KeyEvent.VK_H) && !lastH)
 			{
