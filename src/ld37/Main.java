@@ -2,11 +2,12 @@ package ld37;
 
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import ld37.room.Board;
 import ld37.room.Room;
 import ld37.room.Sky;
-import ld37.room.Spawner;
+import ld37.room.ZombieSpawner;
 import pixgen.Game;
 import pixgen.PixGen;
 import pixgen.math.Vector;
@@ -35,8 +36,7 @@ public class Main extends Game
 	
 	public Player player;
 	
-	public Spawner spawner;
-	public Zombie zombie;
+	public ZombieSpawner spawner;
 	
 	public double timeSurvived;
 	public long cash;
@@ -82,26 +82,46 @@ public class Main extends Game
 		
 		room = new Room();
 		
-		layer1.addChild(new Board(11, -3));
-		layer1.addChild(new Board(14, -3));
-		layer1.addChild(new Board(19, -5));
-		layer1.addChild(new Board(22, -5));
-		layer1.addChild(new Board(27, -3));
-		layer1.addChild(new Board(30, -3));
-		layer2.addChild(new Board(11, -12));
-		layer2.addChild(new Board(14, -12));
-		layer2.addChild(new Board(27, -12));
-		layer2.addChild(new Board(30, -12));
+		Board board1;
+		Board board2;
+		Board board3;
+		Board board4;
+		Board board5;
+		Board board6;
+		Board board7;
+		Board board8;
+		Board board9;
+		Board board10;
+		
+		layer1.addChild((board1 = new Board(11, -3)));
+		layer1.addChild((board2 = new Board(14, -3)));
+		layer1.addChild((board3 = new Board(19, -5)));
+		layer1.addChild((board4 = new Board(22, -5)));
+		layer1.addChild((board5 = new Board(27, -3)));
+		layer1.addChild((board6 = new Board(30, -3)));
+		layer2.addChild((board7 = new Board(11, -12)));
+		layer2.addChild((board8 = new Board(14, -12)));
+		layer2.addChild((board9 = new Board(27, -12)));
+		layer2.addChild((board10 = new Board(30, -12)));
 	
 		player = new Player();
 		player.localTranslation = new Vector(10, -6);
 		layerPlay.addChild(player);
 		
-		zombie = new Zombie();
+		ArrayList<ZombieSpawner.SpawnZone> zones = new ArrayList<ZombieSpawner.SpawnZone>();
 		
-		spawner = new Spawner(zombie, 0.1F);
-		spawner.localTranslation = new Vector(0.0F, 0.0F);
-		layerPlay.addChild(spawner);
+		zones.add(new ZombieSpawner.SpawnZone(board1, new Vector(10.0F, 0.0F)));
+		zones.add(new ZombieSpawner.SpawnZone(board2, new Vector(14.0F, 0.0F)));
+		zones.add(new ZombieSpawner.SpawnZone(board3, new Vector(20.0F, 0.0F)));
+		zones.add(new ZombieSpawner.SpawnZone(board4, new Vector(21.0F, 0.0F)));
+		zones.add(new ZombieSpawner.SpawnZone(board5, new Vector(27.0F, 0.0F)));
+		zones.add(new ZombieSpawner.SpawnZone(board6, new Vector(31.0F, 0.0F)));
+		zones.add(new ZombieSpawner.SpawnZone(board7, new Vector(11.0F, -15.0F)));
+		zones.add(new ZombieSpawner.SpawnZone(board8, new Vector(15.0F, -15.0F)));
+		zones.add(new ZombieSpawner.SpawnZone(board9, new Vector(25.0F, -15.0F)));
+		zones.add(new ZombieSpawner.SpawnZone(board10, new Vector(31.0F, -15.0F)));
+
+		spawner = new ZombieSpawner(layerPlay, 0.1F, zones);
 	}
 
 	private boolean lastH = false;
@@ -113,6 +133,8 @@ public class Main extends Game
 		if(!gameOver)
 		{
 			timeSurvived += delta;
+			
+			spawner.update(delta);
 			
 			if((long) timeSurvived % 60 == 0 && !didPay)
 			{

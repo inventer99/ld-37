@@ -38,6 +38,13 @@ public class Zombie extends Entity implements PhysicsListener
 	
 	private int health;
 	
+	public Board targetBoard;
+	
+	public Zombie(Board board)
+	{
+		this.targetBoard = board;
+	}
+	
 	@Override
 	public void onInit()
 	{

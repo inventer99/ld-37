@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/stratton/Workspace/ld/pixgen2/tinysound-1.1.1.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/pixgen2"/>
+	<classpathentry kind="lib" path="C:/Users/Stratton/Workspace/java/PixGen2/PixGen2/tinysound-1.1.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/PixGen2"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

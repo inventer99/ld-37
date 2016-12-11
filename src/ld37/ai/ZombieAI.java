@@ -1,13 +1,9 @@
 package ld37.ai;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import ld37.Main;
-import ld37.room.Board;
+import ld37.Zombie;
 import pixgen.comp.Component;
 import pixgen.math.Vector;
-import pixgen.scene.Node;
 import pixgen.util.Updateable;
 
 public class ZombieAI extends Component implements Updateable
@@ -30,29 +26,7 @@ public class ZombieAI extends Component implements Updateable
 	public void update(float delta)
 	{
 		if(!inHouse)
-		{
-			if(targetPos == null)
-			{
-				ArrayList<Board> boards = new ArrayList<Board>();
-				for(Node node : Main.game.layer1.getChildren())
-					if(node instanceof Board)
-						boards.add((Board) node);
-				for(Node node : Main.game.layer2.getChildren())
-					if(node instanceof Board)
-						boards.add((Board) node);
-				
-//				Vector diff boards.get(0);
-//				for(Board board : boards)
-//				{
-//					if((new Vector(parent.localTranslation).sub(board.localTranslation)).getLength() < diff.getLength())
-//						diff = board.localTranslation;
-//				}
-				
-				Random r = new Random();
-				
-				targetPos = boards.get(r.nextInt(boards.size())).localTranslation;
-			}
-		}
+				targetPos = ((Zombie) parent).targetBoard.localTranslation;
 		else
 			targetPos = Main.game.player.localTranslation;
 		
